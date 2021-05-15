@@ -18,7 +18,7 @@ namespace iremote {
     UdpServerSecure(AuthServer& authServer);
     
     AuthServer& auth();
-    void begin();
+    void begin(uint16_t udpPort);
 
     template <typename CommandHandler>
     void handleNext(CommandHandler handler);

@@ -13,8 +13,8 @@ AuthServer& UdpServerSecure::auth() {
   return _authServer;
 }
 
-void UdpServerSecure::begin() {
-  _udpServer.begin(7382);
+void UdpServerSecure::begin(uint16_t udpPort) {
+  _udpServer.begin(udpPort);
 }
 
 
