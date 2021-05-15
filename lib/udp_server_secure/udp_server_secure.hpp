@@ -11,7 +11,7 @@
 
 namespace iremote {
   constexpr byte MAX_COMMAND_LEN = 24;
-  using IRCommand = char[MAX_COMMAND_LEN];
+  using UdpString = char[MAX_COMMAND_LEN];
 
   class UdpServerSecure {
   public:
@@ -26,7 +26,7 @@ namespace iremote {
   private:
     AuthServer& _authServer;
     WiFiUDP _udpServer;
-    IRCommand _command;
+    UdpString _command;
 
     bool tryParsePacket();
     bool isRemoteAuthorized();
