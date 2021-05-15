@@ -8,7 +8,7 @@
 #endif
 #include <set>
 
-namespace ir_remote {
+namespace iremote {
   struct AuthSocket {
     IPAddress ip;
     uint16_t port;

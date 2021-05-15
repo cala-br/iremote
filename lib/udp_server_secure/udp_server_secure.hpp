@@ -7,22 +7,24 @@
   #include <WiFi.h>
 #endif
 #include <WiFiUdp.h>
-#include <ir_auth_server.hpp>
+#include <auth_server.hpp>
 
-namespace ir_remote {
+namespace iremote {
   constexpr byte MAX_COMMAND_LEN = 24;
   using IRCommand = char[MAX_COMMAND_LEN];
 
-  class IRServer {
+  class UdpServerSecure {
   public:
-    IRServer(IRAuthServer& authServer);
+    UdpServerSecure(AuthServer& authServer);
     
+    AuthServer& auth();
     void begin();
 
     template <typename CommandHandler>
     void handleNext(CommandHandler handler);
+
   private:
-    IRAuthServer& _authServer;
+    AuthServer& _authServer;
     WiFiUDP _udpServer;
     IRCommand _command;
 
@@ -33,7 +35,7 @@ namespace ir_remote {
 
 
   template <typename CommandHandler>
-  void IRServer::handleNext(CommandHandler handler) {
+  void UdpServerSecure::handleNext(CommandHandler handler) {
     if (!tryParsePacket())      return;
     if (!isRemoteAuthorized())  return;
     if (!tryReadCommand())      return;

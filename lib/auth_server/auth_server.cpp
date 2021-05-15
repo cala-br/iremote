@@ -1,10 +1,10 @@
-#include "ir_auth_server.hpp"
+#include "auth_server.hpp"
 
-using ir_remote::IRAuthServer;
-using ir_remote::AuthSocket;
+using iremote::AuthServer;
+using iremote::AuthSocket;
 
 
-IRAuthServer::IRAuthServer(
+AuthServer::AuthServer(
   const char *username, 
   const char *password
 ) : 
@@ -23,23 +23,23 @@ IRAuthServer::IRAuthServer(
 }
 
 
-void IRAuthServer::setCertificates(const char *cert, const char *key) {
+void AuthServer::setCertificates(const char *cert, const char *key) {
   _server
     .getServer()
     .setRSACert(new X509List{cert}, new PrivateKey{key});
 }
 
 
-void IRAuthServer::begin() {
+void AuthServer::begin() {
   _server.begin();
 }
 
-void IRAuthServer::handleNext() {
+void AuthServer::handleNext() {
   _server.handleClient();
 }
 
 
-bool IRAuthServer::isAuthorized(AuthSocket socket) {
+bool AuthServer::isAuthorized(AuthSocket socket) {
   const auto target = 
     _authorizedClients.find(socket);
   
@@ -47,7 +47,7 @@ bool IRAuthServer::isAuthorized(AuthSocket socket) {
 }
 
 
-void IRAuthServer::tryRegister() {
+void AuthServer::tryRegister() {
   if (!clientAuthenticated()) {
     unauthorized();
     return;
@@ -62,23 +62,23 @@ void IRAuthServer::tryRegister() {
   ok();
 }
 
-void IRAuthServer::deregister() {
+void AuthServer::deregister() {
   deregisterClient();
   unauthorized();
 }
 
 
-bool IRAuthServer::clientAuthenticated() {
-  return _server.authenticate("calabr", "12345");
+bool AuthServer::clientAuthenticated() {
+  return _server.authenticate(_username, _password);
 }
 
 
-void IRAuthServer::registerClient() {
+void AuthServer::registerClient() {
   const auto client = getClientAuthSocket();
   _authorizedClients.insert(client);
 }
 
-void IRAuthServer::deregisterClient() {
+void AuthServer::deregisterClient() {
   const auto client = getClientAuthSocket();
   const auto entry = 
     _authorizedClients.find(client);
@@ -88,7 +88,7 @@ void IRAuthServer::deregisterClient() {
 }
 
 
-AuthSocket IRAuthServer::getClientAuthSocket() {
+AuthSocket AuthServer::getClientAuthSocket() {
   auto client = _server.client();
   auto clientIP = client.remoteIP();
   auto clientPort = _server.arg("port");
@@ -99,14 +99,14 @@ AuthSocket IRAuthServer::getClientAuthSocket() {
 }
 
 
-void IRAuthServer::ok() {
+void AuthServer::ok() {
   _server.send(200, "text/plain", "OK");
 }
 
-void IRAuthServer::badRequest() {
+void AuthServer::badRequest() {
   _server.send(400, "text/plain", "BAD_REQUEST");
 }
 
-void IRAuthServer::unauthorized() {
+void AuthServer::unauthorized() {
   _server.send(401, "text/plain", "UNAUTHORIZED");
 }

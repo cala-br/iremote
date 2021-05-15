@@ -4,10 +4,10 @@
 #include <ESP8266WebServerSecure.h>
 #include "auth_socket.hpp"
 
-namespace ir_remote {
-  class IRAuthServer {
+namespace iremote {
+  class AuthServer {
   public:
-    IRAuthServer(const char *username, const char *password);
+    AuthServer(const char *username, const char *password);
 
     void setCertificates(const char *cert, const char *key);
     void begin();

@@ -1,24 +1,29 @@
 #include <auth_socket.hpp>
-#include "ir_server.hpp"
+#include "udp_server_secure.hpp"
 
-using namespace ir_remote;
+using namespace iremote;
 
 
-IRServer::IRServer(IRAuthServer& authServer)
+UdpServerSecure::UdpServerSecure(AuthServer& authServer)
   : _authServer(authServer)
 {}
 
-void IRServer::begin() {
+
+AuthServer& UdpServerSecure::auth() {
+  return _authServer;
+}
+
+void UdpServerSecure::begin() {
   _udpServer.begin(7382);
 }
 
 
-bool IRServer::tryParsePacket() {
+bool UdpServerSecure::tryParsePacket() {
   int packetSize = _udpServer.parsePacket();
   return packetSize > 0;
 }
 
-bool IRServer::isRemoteAuthorized() {
+bool UdpServerSecure::isRemoteAuthorized() {
   const auto authSocket = AuthSocket{
     .ip = _udpServer.remoteIP(),
     .port = _udpServer.remotePort(),
@@ -27,7 +32,7 @@ bool IRServer::isRemoteAuthorized() {
   return _authServer.isAuthorized(authSocket);
 }
 
-bool IRServer::tryReadCommand() {
+bool UdpServerSecure::tryReadCommand() {
   int bytesRead = 
     _udpServer.read(_command, MAX_COMMAND_LEN);
   
