@@ -13,7 +13,11 @@ AuthServer::AuthServer(
   _server({443}),
   _authorizedClients({AuthSocket::compare})
 {
-  _server.on("/try-register", HTTP_POST, [this] {
+  _server.on("/", [this] {
+    this->hello();
+  });
+
+  _server.on("/register", HTTP_POST, [this] {
     this->tryRegister();
   });
 
@@ -98,6 +102,14 @@ AuthSocket AuthServer::getClientAuthSocket() {
   };
 }
 
+
+void AuthServer::hello() {
+  _server.send(200, "text/plain", 
+    "hello, you can POST\n"
+    " /register?port={int}\n"
+    " /deregister?port={int}"
+  );
+}
 
 void AuthServer::ok() {
   _server.send(200, "text/plain", "OK");

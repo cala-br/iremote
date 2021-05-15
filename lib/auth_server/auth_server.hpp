@@ -28,6 +28,7 @@ namespace iremote {
     void deregisterClient();
     AuthSocket getClientAuthSocket();
 
+    void hello();
     void ok();
     void badRequest();
     void unauthorized();
