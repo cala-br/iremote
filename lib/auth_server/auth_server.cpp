@@ -11,7 +11,7 @@ AuthServer::AuthServer(
   _username(username),
   _password(password),
   _server({443}),
-  _authorizedClients({AuthSocket::compare})
+  _authorizedClients({})
 {
   _server.on("/", [this] {
     this->hello();
@@ -46,7 +46,7 @@ void AuthServer::handleNext() {
 bool AuthServer::isAuthorized(AuthSocket socket) {
   const auto target = 
     _authorizedClients.find(socket);
-  
+
   return target != _authorizedClients.end();
 }
 

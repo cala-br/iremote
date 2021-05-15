@@ -3,6 +3,7 @@
 
 #include <ESP8266WebServerSecure.h>
 #include "auth_socket.hpp"
+#include <set>
 
 namespace iremote {
   class AuthServer {
@@ -18,7 +19,7 @@ namespace iremote {
     const char *_username;
     const char *_password;
     ESP8266WebServerSecure _server;
-    AuthSocketSet _authorizedClients;
+    std::set<AuthSocket> _authorizedClients;
 
     void tryRegister();
     void deregister();

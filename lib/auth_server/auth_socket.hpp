@@ -6,20 +6,27 @@
 #elif defined(ESP32)
   #include <WiFi.h>
 #endif
-#include <set>
 
 namespace iremote {
-  struct AuthSocket {
+  struct AuthSocket : public Printable {
     IPAddress ip;
     uint16_t port;
 
-    static bool compare(AuthSocket a, AuthSocket b) {
-      return a.ip == b.ip && a.port == b.port;
+    AuthSocket(IPAddress ip, uint16_t port)
+      : ip(ip), port(port)
+    {}
+
+    bool operator<(const AuthSocket& o) const {
+      return ip.v4() < o.ip.v4() && port < o.port;
+    }
+
+    size_t printTo(Print& p) const {
+      return 
+        p.print(ip) +
+        p.print(":") +
+        p.print(port);
     }
   };
-
-  using AuthSocketSet = 
-    std::set<AuthSocket, decltype(AuthSocket::compare)*>;
 }
 
 #endif // !AUTH_SOCKET_HPP_
