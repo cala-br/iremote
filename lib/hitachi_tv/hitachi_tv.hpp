@@ -12,8 +12,13 @@ public:
 
   void begin();
   void send(HitachiTVButton button);
+
+  static HitachiTVButton asButton(const String& raw);
 private:
   IRsend _ir;
+  
+  static HitachiTVButton getButtonCode(const String& button);
+  static HitachiTVButton getNumberCode(const String& rawNumber);
 };
 
 #endif // !HITACHI_TV_HPP_
