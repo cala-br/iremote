@@ -17,9 +17,7 @@
     }
   ],
   "license": "Unlicense",
-  "dependencies": {
-    "ottowinter/ESPAsyncWebServer-esphome": "^1.2.7"
-  },
+  "dependencies": {},
   "frameworks": "arduino",
   "platforms": "espressif8266"
 }
