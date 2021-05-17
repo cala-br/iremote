@@ -1,7 +1,0 @@
-{
-  "files.associations": {
-    "certs": "cpp",
-    "thread": "cpp",
-    "functional": "cpp"
-  }
-}
