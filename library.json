@@ -1,0 +1,25 @@
+{
+  "name": "iremote",
+  "version": "1.0.0",
+  "description": "Allows to authorize udp connections to a board",
+  "keywords": "udp, auth, iremote",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/cala-br/iremote.git"
+  },
+  "authors": 
+  [
+    {
+      "name": "calabr",
+      "email": "stefanocalabretti@outlook.it",
+      "maintainer": true
+    }
+  ],
+  "license": "Unlicense",
+  "dependencies": {
+    "ottowinter/ESPAsyncWebServer-esphome": "^1.2.7"
+  },
+  "frameworks": "arduino",
+  "platforms": "espressif8266"
+}
