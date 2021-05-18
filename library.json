@@ -19,5 +19,5 @@
   "license": "Unlicense",
   "dependencies": {},
   "frameworks": "arduino",
-  "platforms": "espressif8266"
+  "platforms": "espressif8266, espressif32"
 }
