@@ -36,9 +36,6 @@ bool UdpServerSecure::tryReadCommand() {
   int bytesRead = 
     _udpServer.read(_command, MAX_COMMAND_LEN);
   
-  if (bytesRead == 0)
-    return false; 
-
   _command[bytesRead] = '\0';
-  return true;
+  return bytesRead > 0;
 }
