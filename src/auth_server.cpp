@@ -6,6 +6,16 @@ using iremote::AuthSocket;
 
 AuthServer::AuthServer(
   const char *username, 
+  const char *password, 
+  CertificatesBag certs
+) : AuthServer(username, password) 
+{
+  setCertificates(certs);
+}
+
+
+AuthServer::AuthServer(
+  const char *username, 
   const char *password
 ) : 
   _username(username),
@@ -27,10 +37,10 @@ AuthServer::AuthServer(
 }
 
 
-void AuthServer::setCertificates(const char *cert, const char *key) {
+void AuthServer::setCertificates(CertificatesBag certs) {
   _server
     .getServer()
-    .setRSACert(new X509List{cert}, new PrivateKey{key});
+    .setRSACert(certs.cert.get(), certs.key.get());
 }
 
 
@@ -97,8 +107,8 @@ AuthSocket AuthServer::getClientAuthSocket() {
   auto clientIP = client.remoteIP();
   auto clientPort = _server.arg("port");
   return {
-    .ip = clientIP,
-    .port = uint16_t(clientPort.toInt()),
+    clientIP,
+    uint16_t(clientPort.toInt()),
   };
 }
 

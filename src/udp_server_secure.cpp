@@ -4,16 +4,17 @@
 using namespace iremote;
 
 
-UdpServerSecure::UdpServerSecure(AuthServer& authServer)
+UdpServerSecure::UdpServerSecure(std::shared_ptr<AuthServer> authServer)
   : _authServer(authServer)
 {}
 
 
-AuthServer& UdpServerSecure::auth() {
+auto UdpServerSecure::auth() -> std::shared_ptr<AuthServer> {
   return _authServer;
 }
 
 void UdpServerSecure::begin(uint16_t udpPort) {
+  _authServer->begin();
   _udpServer.begin(udpPort);
 }
 
@@ -25,11 +26,11 @@ bool UdpServerSecure::tryParsePacket() {
 
 bool UdpServerSecure::isRemoteAuthorized() {
   const auto authSocket = AuthSocket{
-    .ip = _udpServer.remoteIP(),
-    .port = _udpServer.remotePort(),
+    _udpServer.remoteIP(),
+    _udpServer.remotePort(),
   };
 
-  return _authServer.isAuthorized(authSocket);
+  return _authServer->isAuthorized(authSocket);
 }
 
 bool UdpServerSecure::tryReadCommand() {

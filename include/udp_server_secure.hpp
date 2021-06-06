@@ -8,6 +8,7 @@
 #endif
 #include <WiFiUdp.h>
 #include <auth_server.hpp>
+#include <memory>
 
 namespace iremote {
   constexpr byte MAX_COMMAND_LEN = 24;
@@ -15,16 +16,16 @@ namespace iremote {
 
   class UdpServerSecure {
   public:
-    UdpServerSecure(AuthServer& authServer);
+    UdpServerSecure(std::shared_ptr<AuthServer> authServer);
     
-    AuthServer& auth();
+    auto auth() -> std::shared_ptr<AuthServer>;
     void begin(uint16_t udpPort);
 
     template <typename CommandHandler>
     void handleNext(CommandHandler handler);
 
   private:
-    AuthServer& _authServer;
+    std::shared_ptr<AuthServer> _authServer;
     WiFiUDP _udpServer;
     UdpString _command;
 
@@ -36,6 +37,8 @@ namespace iremote {
 
   template <typename CommandHandler>
   void UdpServerSecure::handleNext(CommandHandler handler) {
+    _authServer->handleNext();
+
     if (!tryParsePacket())      return;
     if (!isRemoteAuthorized())  return;
     if (!tryReadCommand())      return;
