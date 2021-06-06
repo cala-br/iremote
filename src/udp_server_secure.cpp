@@ -4,6 +4,10 @@
 using namespace iremote;
 
 
+UdpServerSecure::UdpServerSecure(AuthServer *authServer)
+  : _authServer(authServer)
+{}
+
 UdpServerSecure::UdpServerSecure(std::shared_ptr<AuthServer> authServer)
   : _authServer(authServer)
 {}

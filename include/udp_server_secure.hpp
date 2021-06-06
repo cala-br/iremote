@@ -16,6 +16,7 @@ namespace iremote {
 
   class UdpServerSecure {
   public:
+    UdpServerSecure(AuthServer *authServer);
     UdpServerSecure(std::shared_ptr<AuthServer> authServer);
     
     auto auth() -> std::shared_ptr<AuthServer>;
